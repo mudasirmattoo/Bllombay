@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static tailwind_tags %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/5312aac142.js" crossorigin="anonymous"></script>
+    {% tailwind_css %}
+</head>
+
+<body>
+    {% include 'shop/navbar.html' %}
+
+    <div>
+        <ul class="w-1/6 mx-auto my-20 flex flex-col justify-around" id="item_list">
+
+        </ul>
+    </div>
+
+    <div class="w-full max-w-lg mx-auto">
+        <form method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center">
+            {% csrf_token %}
+            <input type="hidden" name="items" id="items">
+            <input id="name" name="name"
+                class="text-center mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="Full Name">
+            <input id="email" name="email"
+                class="text-center mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="email" placeholder="Email Address">
+            <input id="phoneNumber" name="phoneNumber"
+                class="text-center mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="tel" placeholder="Phone Number">
+            <input id="address" name="address"
+                class="text-center mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="Address">
+            <input id="city" name="city"
+                class="text-center mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="City">
+            <input id="zip" name="zip"
+                class="text-center mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="Zip Code">
+            <input id="state" name=state"
+                class="text-center mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="State">
+            <input id="total" name="total"
+                class="text-center mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="Total Amount to be paid " readonly="">
+            <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
+                type="submit">Place Order</button>
+        </form>
+    </div>
+
+
+
+    {% include 'shop/footer.html' %}
+
+</body>
+
+<script type="text/javascript">
+
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    }
+    else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+
+    let total = 0;
+
+    for (item in cart) {
+        let name = cart[item][1];
+        let quantity = cart[item][0];
+        let price = cart[item][2];
+        total = total + cart[item][2];
+
+
+        let itemString = `<li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-slate-900 dark:border-gray-700 dark:text-white">${name}<span
+                        class="inline-flex items-center py-1 px-2 rounded-full text-xs font-medium bg-blue-500 text-white">${quantity}</span><span
+                        class="inline-flex items-center py-1 px-2 rounded-full text-xs font-medium bg-blue-500 text-white mx-10"><span>$ </span>${price}</span></li>`
+
+        $('#item_list').append(itemString);
+    }
+
+    let totalPrice = `<li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-slate-900 dark:border-gray-700 dark:text-white"><b>Your total : </b><span   class="inline-flex items-center py-1 px-2 rounded-full text-xs font-medium bg-blue-500 text-white mx-10"><span>$ </span>${total}</li>`
+
+    $('#item_list').append(totalPrice);
+    $('#items').val(JSON.stringify(cart));
+
+    $('#total').val(total);
+</script>
+
+</html>
