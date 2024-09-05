@@ -1,0 +1,129 @@
+<!-- navbar -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{% static 'shop/styles.css' %}"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="flex justify-between py-5 w-5/6 mx-auto sticky top-0">
+        <div>
+            <a href="">
+                <h1 class="text-3xl md:text-5xl font-extrabold">BloomBay</h1>
+            </a>
+        </div>
+        <ul class="hidden md:flex space-x-24 text-xl font-semibold items-end">
+            <li>
+                <a href="">Home</a>
+            </li>
+            <li>
+                <a href="">Shop</a>
+            </li>
+            <li>
+                <a href="">Contact</a>
+            </li>
+            <li>
+                <button id="cart" onclick="DisplayCart(cart)" data-ripple-light="true"
+                    data-popover-target="popover-bottom"
+                    class="select-none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>  (0)
+                </button> 
+                <div data-popover="popover-bottom" data-popover-placement="bottom"
+                    class="absolute z-10 p-4 font-sans text-sm font-normal break-words whitespace-normal bg-white border rounded-lg shadow-lg w-max border-blue-gray-50 text-blue-gray-500 shadow-blue-gray-500/10 focus:outline-none"
+                    id="popoverContent">
+                    This is a very beautiful popover, show some love.
+                </div>
+            </li>
+        </ul>
+
+        <div class="md:hidden">
+            <button id="cart" onclick="DisplayCart(cart)" data-ripple-light="true"
+            data-popover-target="popover-bottom"
+            class="select-none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+            <i class="fa-solid fa-cart-shopping text-lg"></i>  (0)
+        </button>
+        <div data-popover="popover-bottom" data-popover-placement="bottom"
+            class="absolute z-10 p-4 font-sans text-sm font-normal break-words whitespace-normal bg-white border rounded-lg shadow-lg w-max border-blue-gray-50 text-blue-gray-500 shadow-blue-gray-500/10 focus:outline-none"
+            id="popoverContent">
+            This is a very beautiful popover, show some love.
+        </div>
+        </div>
+        <div class="md:hidden flex items-center">
+            <button id="toggleMenu" class="text-black">
+                ☰ <!-- You can use an icon for the menu -->
+            </button>
+        </div>
+    </div>
+
+    <!-- Collapsible menu for small screens -->
+    <div id="mobileMenu" class="hidden md:hidden sticky top-0 z-50">
+        <div class="w-3/4 mx-auto py-3 ">
+            <ul class="text-xl text-right ">
+                <!-- Your navigation items for small screens -->
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Contact</a></li>
+                <li>
+                   
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div>
+        <form action="" class="w-5/6 mx-auto flex space-x-4">
+
+            <input type="search" name="item_name" placeholder="search for products"
+                class="w-full rounded-lg border border-lime-500 text-center">
+            <button type="submit" class="bg-white shadow-lg p-3 rounded-lg">🔎</button>
+
+
+        </form>
+</body>
+<script type="text/javascript">
+
+
+    document.getElementById('toggleMenu').addEventListener('click', function () {
+        var mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu.style.display === 'block') {
+            mobileMenu.style.display = 'none';
+        } else {
+            mobileMenu.style.display = 'block';
+        }
+    });
+
+
+    DisplayCart(cart);
+
+    function DisplayCart(cart) {
+        var cartString = "<h1>This is your cart</h1>";
+        var cartIndex = 1;
+
+        let cartObject = JSON.parse(localStorage.getItem('cart'));
+
+        for(item in cartObject){
+            cartString += cartObject[item][1] +" Qty: " + cartObject[item][0] +"</br>"
+        }
+
+    
+        cartString += "<div class='flex justify-center items-center my-5'><a href='/checkout'><button class='p-2 bg-lime-500 rounded-lg text-center' id='checkout'>Checkout</button></a></div>";
+        document.getElementById("popoverContent").innerHTML = cartString;
+    }
+
+</script>
+
+<script type="module" src="node_modules/@material-tailwind/html@latest/scripts/popover.js"></script>
+
+<script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+
+</html>
+
+
+</div>
